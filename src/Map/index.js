@@ -13,10 +13,6 @@ export default class Map extends React.Component {
     super(props);
   }
 
-  //   async componentDidMount() {
-  //     await this.getReady();
-  //   }
-
   componentDidMount = () => {
     console.log("LATS IN PROPS:");
     console.log(this.props.lats);
@@ -35,14 +31,19 @@ export default class Map extends React.Component {
       }
     ).addTo(this.map);
 
-    var circle = L.circle([38.5, -78.5], {
+    L.marker([38.04, -78.48]).addTo(this.map);
+
+    var circle = L.circle([38.04, -78.48], {
       color: "red",
       fillColor: "#f03",
       fillOpacity: 0.5,
-      radius: 500
+      radius: 10
     }).addTo(this.map);
 
-    L.marker([38.5, -78.5]).addTo(this.map);
+    var popup = L.popup()
+      .setLatLng([38.04, -78.48])
+      .setContent("I am a standalone popup.")
+      .openOn(this.map);
 
     /*
     if (this.props.lats.length > 0) {
