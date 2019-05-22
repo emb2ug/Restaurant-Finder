@@ -1,3 +1,5 @@
+// Evan Bernard
+
 import React, { Component } from "react";
 import "./App.css";
 import Restaurants from "./Restaurants.js";
