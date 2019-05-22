@@ -15,7 +15,8 @@ class Restaurants extends Component {
     this.state = {
       restaurants: [],
       allLatitudes: [],
-      allLongitudes: []
+      allLongitudes: [],
+      names: []
       //names: [],
       //ratings: [],
       //prices: [],
@@ -27,6 +28,7 @@ class Restaurants extends Component {
     let tempRestaurants = [];
     let tempAllLatitudes = [];
     let tempAllLongitudes = [];
+    let tempNames = [];
     //let tempNames = [];
     //let tempRatings = [];
     //let tempPrices = [];
@@ -79,13 +81,15 @@ class Restaurants extends Component {
         tempRestaurants.forEach(restaurant => {
           tempAllLatitudes.push(restaurant.latitude);
           tempAllLongitudes.push(restaurant.longitude);
+          tempNames.push(restaurant.name);
         });
 
         console.log(tempRestaurants);
         this.setState({
           restaurants: tempRestaurants,
           allLatitudes: tempAllLatitudes,
-          allLongitudes: tempAllLongitudes
+          allLongitudes: tempAllLongitudes,
+          names: tempNames
           //names: tempNames,
           //ratings: tempRatings,
           //prices: tempPrices,
@@ -131,6 +135,7 @@ class Restaurants extends Component {
               </div>
               <div className="col-md-auto">
                 <Map
+                  restaurants={this.state.restaurants}
                   lats={this.state.allLatitudes}
                   longs={this.state.allLongitudes}
                 />
