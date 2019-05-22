@@ -19,9 +19,6 @@ const Wrapper = styled.div`
 export default class Map extends React.Component {
   constructor(props) {
     super(props);
-    console.log("a");
-    console.log(props.lats);
-    console.log("b");
   }
 
   componentDidMount = () => {
@@ -31,7 +28,6 @@ export default class Map extends React.Component {
       zoomControl: true
     });
 
-    /*
     L.tileLayer(
       "https://maps.heigit.org/openmapsurfer/tiles/roads/webmercator/{z}/{x}/{y}.png",
       {
@@ -49,38 +45,23 @@ export default class Map extends React.Component {
       fillOpacity: 0.5,
       radius: 10
     }).addTo(this.map);
-*/
+
     // var popup = L.popup()
     //   .setLatLng([38.04, -78.48])
     //   .setContent("I am a standalone popup.")
     //   .openOn(this.map);
-
-    // if (this.props.lats.length > 0) {
-    //   console.log(this.props.lats);
-    //   for (let i = 0; i < this.props.lats.length; i++) {
-    //     //L.marker([this.props.lats[i], this.props.longs[i]]).addTo(this.map);
-    //     var popup = L.popup()
-    //       .setLatLng([this.props.lats[i], this.props.longs[i]])
-    //       .setContent("I am a standalone popup.")
-    //       .openOn(this.map);
-    //   }
-    // }
   };
 
   render() {
-    const LeafletMarkers = this.props.restaurants.map(restaurant => (
-      <L.Marker
-        position={[restaurant.latitude, restaurant.longitude]}
-        key={`marker_${restaurant.name}`}
-      >
-        <L.Popup>
-          <span>{restaurant.name}</span>
-        </L.Popup>
-      </L.Marker>
-    ));
+    console.log(this.props.lats);
+    console.log(this.props.longs);
+
+    //L.marker([this.props.lats[0], this.props.longs[0]]).addTo(this.map);
 
     return (
       <div>
+        {/* {L.marker([this.props.lats[0], this.props.longs[0]]).addTo(this.map)} */}
+        {/*}
         <div className="map">
           <L.Map
             center={[38.04, -78.48]}
@@ -95,22 +76,11 @@ export default class Map extends React.Component {
             {LeafletMarkers}
           </L.Map>
         </div>
-
-        {/* {console.log("h")}
-        {console.log(this.props.lats)}
-        {<h1>{this.props.lats[2]}</h1>}
-        {console.log(this.props.lats[2])}
-        {console.log(this.props.longs[2])}
-        L.marker([this.props.lats[2], this.props.longs[2]]).addTo(this.map)*/}
-        {/*Object.keys(this.props.restaurants).map(restaurant =>
-          L.marker([restaurant.latitude, restaurant.longitude]).addTo(this.map)
-        )*/}
-
+        */}
         {/*L.marker([
           this.props.restaurants[0].latitude,
           this.props.restaurants[0].longitude
         ]).addTo(this.map)*/}
-
         <Wrapper width="490px" height="600px" id="map" />
       </div>
     );

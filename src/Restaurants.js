@@ -4,7 +4,8 @@ import React, { Component } from "react";
 import "./App.css";
 import axios from "axios";
 import "./Restaurants.css";
-import Map from "./Map/index.js";
+//import Map from "./Map/index.js";
+import Map from "./Map.js";
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 
