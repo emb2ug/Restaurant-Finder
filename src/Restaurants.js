@@ -36,7 +36,7 @@ class Restaurants extends Component {
     //let tempDollarSigns = [];
 
     let url =
-      "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants+in+Charlottesville&type=%22restaurant%22&radius=20000&opennow&key=" +
+      "https://cors-anywhere-hclaunch.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants+in+Charlottesville&type=%22restaurant%22&radius=20000&opennow&key=" +
       API_KEY;
 
     axios
@@ -66,7 +66,7 @@ class Restaurants extends Component {
           //console.log(restaurant.geometry.location.lat);
         });
 
-        //console.log("LAT: " + tempRestaurants[0].latitude);
+        console.log("LAT: " + tempRestaurants[0].latitude);
         //console.log("LONG: " + tempRestaurants[0].longitude);
 
         tempRestaurants.sort((a, b) =>
@@ -135,11 +135,13 @@ class Restaurants extends Component {
                 })}
               </div>
               <div className="col-md-auto">
-                <Map
-                  restaurants={this.state.restaurants}
-                  lats={this.state.allLatitudes}
-                  longs={this.state.allLongitudes}
-                />
+                {this.state.lats.length > 0 && (
+                  <Map
+                    restaurants={this.state.restaurants}
+                    lats={this.state.allLatitudes}
+                    longs={this.state.allLongitudes}
+                  />
+                )}
               </div>
             </div>
           </div>

@@ -19,6 +19,10 @@ const Wrapper = styled.div`
 export default class Map extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      i: 0
+    };
   }
 
   componentDidMount = () => {
@@ -27,6 +31,10 @@ export default class Map extends React.Component {
       zoom: 13,
       zoomControl: true
     });
+
+    for (let j = 0; j < this.props.lats.length; j++) {
+      L.marker([this.props.lats[j], this.props.longs[j]]).addTo(this.map);
+    }
 
     L.tileLayer(
       "https://maps.heigit.org/openmapsurfer/tiles/roads/webmercator/{z}/{x}/{y}.png",
@@ -45,42 +53,16 @@ export default class Map extends React.Component {
       fillOpacity: 0.5,
       radius: 10
     }).addTo(this.map);
-
-    // var popup = L.popup()
-    //   .setLatLng([38.04, -78.48])
-    //   .setContent("I am a standalone popup.")
-    //   .openOn(this.map);
   };
 
   render() {
-    console.log(this.props.lats);
+    console.log(this.props.lats[0]);
     console.log(this.props.longs);
 
-    //L.marker([this.props.lats[0], this.props.longs[0]]).addTo(this.map);
+    console.log(this.props.lats[0]);
 
     return (
       <div>
-        {/* {L.marker([this.props.lats[0], this.props.longs[0]]).addTo(this.map)} */}
-        {/*}
-        <div className="map">
-          <L.Map
-            center={[38.04, -78.48]}
-            zoom={13}
-            zoomControl={true}
-            //className="map__reactleaflet"
-          >
-            <L.TileLayer
-              url="https://maps.heigit.org/openmapsurfer/tiles/roads/webmercator/{z}/{x}/{y}.png"
-              //attribution='&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attribution">CARTO</a>'
-            />
-            {LeafletMarkers}
-          </L.Map>
-        </div>
-        */}
-        {/*L.marker([
-          this.props.restaurants[0].latitude,
-          this.props.restaurants[0].longitude
-        ]).addTo(this.map)*/}
         <Wrapper width="490px" height="600px" id="map" />
       </div>
     );
