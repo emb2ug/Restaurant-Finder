@@ -44,6 +44,7 @@ class UserInput extends Component {
       <div className="App">
         <header className="App-header">
           <p />
+          <p />
           <form>
             <input type="text" id="searchInput" />
             <input
