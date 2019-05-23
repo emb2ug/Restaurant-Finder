@@ -36,7 +36,7 @@ export default class Map extends React.Component {
     if (this.props.userLat !== 0) {
       this.map = L.map("map", {
         center: [this.props.userLat, this.props.userLng],
-        zoom: 13,
+        zoom: 11,
         zoomControl: true
       });
     } else {

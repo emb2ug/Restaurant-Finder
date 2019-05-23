@@ -29,7 +29,6 @@ class Restaurants extends Component {
     let url = "";
 
     console.log(this.props.searchText);
-    //restaurants+in+Charlottesville
 
     /* Geocoding */
     if (this.props.searchText.length > 0 && this.props.isAnAddress) {
@@ -118,7 +117,7 @@ class Restaurants extends Component {
       url =
         "https://cors-anywhere-hclaunch.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch/json?query=" +
         mySearchText +
-        "in+Charlottesville&type=%22restaurant%22&radius=20000&opennow&key=" +
+        "&type=%22restaurant%22&radius=20000&opennow&key=" +
         API_KEY;
 
       axios
@@ -163,7 +162,9 @@ class Restaurants extends Component {
             restaurants: tempRestaurants,
             allLatitudes: tempAllLatitudes,
             allLongitudes: tempAllLongitudes,
-            names: tempNames
+            names: tempNames,
+            userLat: tempRestaurants[0].latitude,
+            userLng: tempRestaurants[0].longitude
           });
         });
     }
@@ -185,7 +186,15 @@ class Restaurants extends Component {
         />
 
         <header className="App-header">
-          <h4>Results for "{this.props.searchText}"</h4>
+          {/* <h4>Results for "{this.props.searchText}"</h4> */}
+          <h4>
+            {this.props.isAnAddress &&
+              'Results near "' + this.props.searchText + '"'}
+          </h4>
+          <h4>
+            {!this.props.isAnAddress &&
+              'Results for "' + this.props.searchText + '"'}
+          </h4>
 
           <div className="container">
             <div className="row justify-content-left">

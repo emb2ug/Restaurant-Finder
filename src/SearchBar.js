@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "./App.css";
+import "./SearchBar.css";
 import Restaurants from "./Restaurants.js";
 import Map from "./Map.js";
 
@@ -38,23 +39,26 @@ class SearchBar extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <input
-            type="text"
-            height="50"
-            width="200"
-            placeholder="Search here!"
-            id="searchInput"
-          />
-          <input
-            type="submit"
-            value="Search by Category"
-            onClick={() => this.getInput()}
-          />
-          <input
-            type="submit"
-            value="Search by Address"
-            onClick={() => this.addressSearch()}
-          />
+          <container>
+            <input
+              type="text"
+              height="50"
+              width="200"
+              placeholder="Search here!"
+              id="searchInput"
+            />
+
+            <input
+              type="submit"
+              value="Search by Category"
+              onClick={() => this.getInput()}
+            />
+            <input
+              type="submit"
+              value="Search by Address"
+              onClick={() => this.addressSearch()}
+            />
+          </container>
 
           {this.state.searchText.length !== 0 ? (
             <Restaurants
@@ -62,7 +66,14 @@ class SearchBar extends Component {
               isAnAddress={this.state.isAnAddress}
             />
           ) : (
-            <div />
+            <div>
+              <br />
+              <img
+                height="300"
+                width="300"
+                src="http://images.clipartpanda.com/restaurant-clipart-Restaurant-Sign-Black.png"
+              />
+            </div>
           )}
         </header>
       </div>

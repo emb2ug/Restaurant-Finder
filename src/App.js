@@ -16,9 +16,12 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
           {/* <Restaurants /> */}
-          <h2>Restaurant Finder</h2>
 
-          <SearchBar />
+          <container>
+            <h2>Restaurant Finder</h2>
+
+            <SearchBar />
+          </container>
         </header>
       </div>
     );

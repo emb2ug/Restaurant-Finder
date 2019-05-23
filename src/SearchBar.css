@@ -1,0 +1,11 @@
+#container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+#input {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+}
