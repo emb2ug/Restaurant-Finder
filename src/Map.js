@@ -52,12 +52,6 @@ export default class Map extends React.Component {
         this.props.lats[i],
         this.props.longs[i]
       ]).addTo(this.map);
-      // if (i < 5) {
-      //   let restaurantMarker = L.marker(
-      //     [this.props.lats[i], this.props.longs[i]],
-      //     { icon: greenIcon }
-      //   ).addTo(this.map);
-      // }
 
       restaurantMarker.bindPopup(this.props.restaurants[i].name);
     }
@@ -72,7 +66,46 @@ export default class Map extends React.Component {
     ).addTo(this.map);
   };
 
+  updateMap() {
+    if (this.props.userLat !== 0) {
+      this.map = L.map("map", {
+        center: [this.props.userLat, this.props.userLng],
+        zoom: 11,
+        zoomControl: true
+      });
+    } else {
+      this.map = L.map("map", {
+        center: [38.04, -78.48],
+        zoom: 13,
+        zoomControl: true
+      });
+    }
+
+    for (let i = 0; i < this.props.lats.length; i++) {
+      let restaurantMarker = L.marker([
+        this.props.lats[i],
+        this.props.longs[i]
+      ]).addTo(this.map);
+
+      restaurantMarker.bindPopup(this.props.restaurants[i].name);
+    }
+
+    L.tileLayer(
+      "https://maps.heigit.org/openmapsurfer/tiles/roads/webmercator/{z}/{x}/{y}.png",
+      {
+        maxZoom: 100,
+        maxNativeZoom: 50,
+        detectRetina: true
+      }
+    ).addTo(this.map);
+  }
+
   render() {
+    // if (this.props.restaurantsUpdated) {
+    //   this.updateMap();
+    //   this.props.revertMapChange();
+    // }
+
     return (
       <div>
         <Wrapper width="400px" height="500px" id="map" />

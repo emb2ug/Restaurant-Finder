@@ -16,7 +16,8 @@ class SearchBar extends Component {
 
     this.state = {
       searchText: "",
-      isAnAddress: false
+      isAnAddress: false,
+      clicked: false
     };
   }
 
@@ -26,7 +27,8 @@ class SearchBar extends Component {
     let userInput = document.getElementById("searchInput").value;
     this.setState({
       searchText: userInput,
-      isAnAddress: false
+      isAnAddress: false,
+      clicked: true
     });
     console.log(userInput);
   };
@@ -35,7 +37,14 @@ class SearchBar extends Component {
     let userInput = document.getElementById("searchInput").value;
     this.setState({
       searchText: userInput,
-      isAnAddress: true
+      isAnAddress: true,
+      clicked: true
+    });
+  };
+
+  revertChange = () => {
+    this.setState({
+      clicked: false
     });
   };
 
@@ -45,6 +54,7 @@ class SearchBar extends Component {
         <header className="App-header">
           <container>
             <input
+              className="mycontainer"
               type="text"
               height="50"
               width="200"
@@ -57,7 +67,7 @@ class SearchBar extends Component {
               color="primary"
               onClick={() => this.getInput()}
             >
-              Search By Category
+              Find Cville Food
             </Button>
 
             <Button
@@ -65,7 +75,7 @@ class SearchBar extends Component {
               color="primary"
               onClick={() => this.addressSearch()}
             >
-              Search By Address
+              Search By Location
             </Button>
 
             {/* <input
@@ -79,6 +89,8 @@ class SearchBar extends Component {
             <Restaurants
               searchText={this.state.searchText}
               isAnAddress={this.state.isAnAddress}
+              clicked={this.state.clicked}
+              revertChange={this.revertChange}
             />
           ) : (
             <div>

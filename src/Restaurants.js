@@ -16,7 +16,8 @@ class Restaurants extends Component {
       allLongitudes: [],
       names: [],
       userLat: 0,
-      userLng: 0
+      userLng: 0,
+      restaurantsUpdated: false
     };
   }
 
@@ -113,7 +114,8 @@ class Restaurants extends Component {
               restaurants: tempRestaurants,
               allLatitudes: tempAllLatitudes,
               allLongitudes: tempAllLongitudes,
-              names: tempNames
+              names: tempNames,
+              restaurantsUpdated: true
             });
           });
         });
@@ -121,7 +123,7 @@ class Restaurants extends Component {
       url =
         "https://cors-anywhere-hclaunch.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch/json?query=" +
         mySearchText +
-        "&type=%22restaurant%22&radius=20000&opennow&key=" +
+        "+in+charlottesville&type=%22restaurant%22&radius=20000&opennow&key=" +
         API_KEY;
 
       axios
@@ -168,17 +170,29 @@ class Restaurants extends Component {
             allLongitudes: tempAllLongitudes,
             names: tempNames,
             userLat: tempRestaurants[0].latitude,
-            userLng: tempRestaurants[0].longitude
+            userLng: tempRestaurants[0].longitude,
+            restaurantsUpdated: true
           });
         });
     }
   };
 
+  revertMapChange = () => {
+    this.setState({
+      restaurantsUpdated: false
+    });
+  };
+
   // Bootstrap for table columns
   render() {
-    this.getRestaurants();
     console.log("GEOLAT");
     console.log(this.state.userLat);
+
+    if (this.props.clicked) {
+      this.getRestaurants();
+      this.props.revertChange();
+    }
+
     return (
       <div className="App">
         <link
@@ -227,6 +241,7 @@ class Restaurants extends Component {
                     longs={this.state.allLongitudes}
                     userLat={this.state.userLat}
                     userLng={this.state.userLng}
+                    restaurantsUpdated={this.state.restaurantsUpdated}
                   />
                 ) : (
                   <div />
