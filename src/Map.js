@@ -33,11 +33,19 @@ export default class Map extends React.Component {
   }
 
   componentDidMount = () => {
-    this.map = L.map("map", {
-      center: [38.04, -78.48],
-      zoom: 13,
-      zoomControl: true
-    });
+    if (this.props.userLat !== 0) {
+      this.map = L.map("map", {
+        center: [this.props.userLat, this.props.userLng],
+        zoom: 13,
+        zoomControl: true
+      });
+    } else {
+      this.map = L.map("map", {
+        center: [38.04, -78.48],
+        zoom: 13,
+        zoomControl: true
+      });
+    }
 
     for (let i = 0; i < this.props.lats.length; i++) {
       let restaurantMarker = L.marker([
@@ -67,7 +75,7 @@ export default class Map extends React.Component {
   render() {
     return (
       <div>
-        <Wrapper width="500px" height="630px" id="map" />
+        <Wrapper width="400px" height="500px" id="map" />
       </div>
     );
   }

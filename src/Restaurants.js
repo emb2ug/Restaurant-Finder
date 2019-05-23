@@ -14,74 +14,167 @@ class Restaurants extends Component {
       restaurants: [],
       allLatitudes: [],
       allLongitudes: [],
-      names: []
+      names: [],
+      userLat: 0,
+      userLng: 0
     };
   }
 
   componentDidMount = () => {
+    let mySearchText = this.props.searchText;
     let tempRestaurants = [];
     let tempAllLatitudes = [];
     let tempAllLongitudes = [];
     let tempNames = [];
+    let url = "";
 
     console.log(this.props.searchText);
+    //restaurants+in+Charlottesville
 
-    let url =
-      "https://cors-anywhere-hclaunch.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch/json?query=" +
-      //restaurants+in+Charlottesville
-      this.props.searchText +
-      "&type=%22restaurant%22&radius=20000&opennow&key=" +
-      API_KEY;
+    /* Geocoding */
+    if (this.props.searchText.length > 0 && this.props.isAnAddress) {
+      console.log("gothereaddress");
+      let geoURL =
+        "https://cors-anywhere-hclaunch.herokuapp.com/https://maps.googleapis.com/maps/api/geocode/json?address=" +
+        this.props.searchText +
+        "&key=" +
+        API_KEY;
+      console.log(geoURL);
+      let geoLat = 0;
+      let geoLng = 0;
 
-    axios
-      .get(url)
+      axios
+        .get(geoURL)
 
-      .then(response => {
-        response.data.results.forEach(restaurant => {
-          let myString = "";
-          for (let i = 0; i < restaurant.price_level; i++) {
-            myString += "$";
-          }
+        .then(geoResponse => {
+          geoLat = geoResponse.data.results[0].geometry.location.lat;
 
-          tempRestaurants.push({
-            name: restaurant.name,
-            rating: restaurant.rating,
-            price: restaurant.price_level,
-            dollarSigns: myString,
-            latitude: restaurant.geometry.location.lat,
-            longitude: restaurant.geometry.location.lng
+          geoLng = geoResponse.data.results[0].geometry.location.lng;
+          console.log(geoLat);
+          console.log(geoLng);
+
+          this.setState({
+            userLat: geoResponse.data.results[0].geometry.location.lat,
+            userLng: geoResponse.data.results[0].geometry.location.lng
+          });
+        })
+
+        .then(rep => {
+          let secondGeoURL =
+            "https://cors-anywhere-hclaunch.herokuapp.com/https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" +
+            geoLat +
+            "," +
+            geoLng +
+            "&radius=20000&type=restaurant&key=" +
+            API_KEY;
+
+          console.log(secondGeoURL);
+
+          axios.get(secondGeoURL).then(response => {
+            console.log(response);
+            response.data.results.forEach(restaurant => {
+              let myString = "";
+              for (let i = 0; i < restaurant.price_level; i++) {
+                myString += "$";
+              }
+
+              tempRestaurants.push({
+                name: restaurant.name,
+                rating: restaurant.rating,
+                price: restaurant.price_level,
+                dollarSigns: myString,
+                latitude: restaurant.geometry.location.lat,
+                longitude: restaurant.geometry.location.lng
+              });
+            });
+
+            tempRestaurants.sort((a, b) =>
+              a.rating < b.rating
+                ? 1
+                : a.rating === b.rating
+                ? a.price > b.price
+                  ? 1
+                  : -1
+                : -1
+            );
+
+            // Sort restaurants by rating (high to low)
+            // Tiebreaker is price level (low to hight)
+            tempRestaurants.forEach(restaurant => {
+              tempAllLatitudes.push(restaurant.latitude);
+              tempAllLongitudes.push(restaurant.longitude);
+              tempNames.push(restaurant.name);
+            });
+
+            this.setState({
+              restaurants: tempRestaurants,
+              allLatitudes: tempAllLatitudes,
+              allLongitudes: tempAllLongitudes,
+              names: tempNames
+            });
           });
         });
+    } else if (this.props.searchText.length > 0 && !this.props.isAnAddress) {
+      url =
+        "https://cors-anywhere-hclaunch.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch/json?query=" +
+        mySearchText +
+        "in+Charlottesville&type=%22restaurant%22&radius=20000&opennow&key=" +
+        API_KEY;
 
-        tempRestaurants.sort((a, b) =>
-          a.rating < b.rating
-            ? 1
-            : a.rating === b.rating
-            ? a.price > b.price
+      axios
+        .get(url)
+
+        .then(response => {
+          response.data.results.forEach(restaurant => {
+            let myString = "";
+            for (let i = 0; i < restaurant.price_level; i++) {
+              myString += "$";
+            }
+
+            tempRestaurants.push({
+              name: restaurant.name,
+              rating: restaurant.rating,
+              price: restaurant.price_level,
+              dollarSigns: myString,
+              latitude: restaurant.geometry.location.lat,
+              longitude: restaurant.geometry.location.lng
+            });
+          });
+
+          tempRestaurants.sort((a, b) =>
+            a.rating < b.rating
               ? 1
+              : a.rating === b.rating
+              ? a.price > b.price
+                ? 1
+                : -1
               : -1
-            : -1
-        );
+          );
 
-        // Sort restaurants by rating (high to low)
-        // Tiebreaker is price level (low to hight)
-        tempRestaurants.forEach(restaurant => {
-          tempAllLatitudes.push(restaurant.latitude);
-          tempAllLongitudes.push(restaurant.longitude);
-          tempNames.push(restaurant.name);
-        });
+          // Sort restaurants by rating (high to low)
+          // Tiebreaker is price level (low to hight)
+          tempRestaurants.forEach(restaurant => {
+            tempAllLatitudes.push(restaurant.latitude);
+            tempAllLongitudes.push(restaurant.longitude);
+            tempNames.push(restaurant.name);
+          });
 
-        this.setState({
-          restaurants: tempRestaurants,
-          allLatitudes: tempAllLatitudes,
-          allLongitudes: tempAllLongitudes,
-          names: tempNames
+          this.setState({
+            restaurants: tempRestaurants,
+            allLatitudes: tempAllLatitudes,
+            allLongitudes: tempAllLongitudes,
+            names: tempNames
+          });
         });
-      });
+    }
   };
+
+  getRestaurants() {}
 
   // Bootstrap for table columns
   render() {
+    console.log("GEOLAT");
+    console.log(this.state.userLat);
     return (
       <div className="App">
         <link
@@ -92,7 +185,7 @@ class Restaurants extends Component {
         />
 
         <header className="App-header">
-          <h2>Charlottesville Restaurants</h2>
+          <h4>Results for "{this.props.searchText}"</h4>
 
           <div className="container">
             <div className="row justify-content-left">
@@ -120,6 +213,8 @@ class Restaurants extends Component {
                     restaurants={this.state.restaurants}
                     lats={this.state.allLatitudes}
                     longs={this.state.allLongitudes}
+                    userLat={this.state.userLat}
+                    userLng={this.state.userLng}
                   />
                 ) : (
                   <div />
