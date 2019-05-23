@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "./App.css";
 import Restaurants from "./Restaurants.js";
 import "leaflet/dist/leaflet.css";
+import UserInput from "./UserInput.js";
 
 class App extends Component {
   constructor(props) {
@@ -13,7 +14,8 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Restaurants />
+        {/*<Restaurants />*/}
+        <UserInput />
       </div>
     );
   }

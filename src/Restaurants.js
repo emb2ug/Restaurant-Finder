@@ -24,8 +24,13 @@ class Restaurants extends Component {
     let tempAllLongitudes = [];
     let tempNames = [];
 
+    console.log(this.props.searchText);
+
     let url =
-      "https://cors-anywhere-hclaunch.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants+in+Charlottesville&type=%22restaurant%22&radius=20000&opennow&key=" +
+      "https://cors-anywhere-hclaunch.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch/json?query=" +
+      //restaurants+in+Charlottesville
+      this.props.searchText +
+      "&type=%22restaurant%22&radius=20000&opennow&key=" +
       API_KEY;
 
     axios
