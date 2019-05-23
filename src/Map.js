@@ -30,10 +30,6 @@ const Wrapper = styled.div`
 export default class Map extends React.Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      i: 0
-    };
   }
 
   componentDidMount = () => {
@@ -43,19 +39,19 @@ export default class Map extends React.Component {
       zoomControl: true
     });
 
-    for (let j = 0; j < this.props.lats.length; j++) {
+    for (let i = 0; i < this.props.lats.length; i++) {
       let restaurantMarker = L.marker([
-        this.props.lats[j],
-        this.props.longs[j]
+        this.props.lats[i],
+        this.props.longs[i]
       ]).addTo(this.map);
-      // if (j < 5) {
+      // if (i < 5) {
       //   let restaurantMarker = L.marker(
-      //     [this.props.lats[j], this.props.longs[j]],
+      //     [this.props.lats[i], this.props.longs[i]],
       //     { icon: greenIcon }
       //   ).addTo(this.map);
       // }
 
-      restaurantMarker.bindPopup(this.props.restaurants[j].name);
+      restaurantMarker.bindPopup(this.props.restaurants[i].name);
     }
 
     L.tileLayer(

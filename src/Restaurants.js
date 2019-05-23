@@ -1,10 +1,7 @@
-// Evan Bernard
-
 import React, { Component } from "react";
 import "./App.css";
 import axios from "axios";
 import "./Restaurants.css";
-//import Map from "./Map/index.js";
 import Map from "./Map.js";
 
 const API_KEY = process.env.REACT_APP_API_KEY;
@@ -18,10 +15,6 @@ class Restaurants extends Component {
       allLatitudes: [],
       allLongitudes: [],
       names: []
-      //names: [],
-      //ratings: [],
-      //prices: [],
-      //dollarSigns: ""
     };
   }
 
@@ -30,10 +23,6 @@ class Restaurants extends Component {
     let tempAllLatitudes = [];
     let tempAllLongitudes = [];
     let tempNames = [];
-    //let tempNames = [];
-    //let tempRatings = [];
-    //let tempPrices = [];
-    //let tempDollarSigns = [];
 
     let url =
       "https://cors-anywhere-hclaunch.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants+in+Charlottesville&type=%22restaurant%22&radius=20000&opennow&key=" +
@@ -44,15 +33,10 @@ class Restaurants extends Component {
 
       .then(response => {
         response.data.results.forEach(restaurant => {
-          //tempNames.push(restaurant.name);
-          //tempRatings.push(restaurant.rating);
-          //tempPrices.push(restaurant.price_level);
-
           let myString = "";
           for (let i = 0; i < restaurant.price_level; i++) {
             myString += "$";
           }
-          //tempDollarSigns.push(myString);
 
           tempRestaurants.push({
             name: restaurant.name,
@@ -62,12 +46,7 @@ class Restaurants extends Component {
             latitude: restaurant.geometry.location.lat,
             longitude: restaurant.geometry.location.lng
           });
-
-          //console.log(restaurant.geometry.location.lat);
         });
-
-        console.log("LAT: " + tempRestaurants[0].latitude);
-        //console.log("LONG: " + tempRestaurants[0].longitude);
 
         tempRestaurants.sort((a, b) =>
           a.rating < b.rating
@@ -79,25 +58,20 @@ class Restaurants extends Component {
             : -1
         );
 
+        // Sort restaurants by rating (high to low)
+        // Tiebreaker is price level (low to hight)
         tempRestaurants.forEach(restaurant => {
           tempAllLatitudes.push(restaurant.latitude);
           tempAllLongitudes.push(restaurant.longitude);
           tempNames.push(restaurant.name);
         });
 
-        console.log(tempRestaurants);
         this.setState({
           restaurants: tempRestaurants,
           allLatitudes: tempAllLatitudes,
           allLongitudes: tempAllLongitudes,
           names: tempNames
-          //names: tempNames,
-          //ratings: tempRatings,
-          //prices: tempPrices,
-          //dollarSigns: tempDollarSigns
         });
-
-        //console.log(this.state.allLatitudes);
       });
   };
 
@@ -135,6 +109,7 @@ class Restaurants extends Component {
                 })}
               </div>
               <div className="col-md-auto">
+                {/*Only create instance of map if props (lats and longs) are ready to be passed into Map*/}
                 {this.state.allLatitudes.length != 0 ? (
                   <Map
                     restaurants={this.state.restaurants}
