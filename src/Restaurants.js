@@ -242,6 +242,7 @@ class Restaurants extends Component {
                     userLat={this.state.userLat}
                     userLng={this.state.userLng}
                     restaurantsUpdated={this.state.restaurantsUpdated}
+                    revertMapChange={this.revertMapChange}
                   />
                 ) : (
                   <div />
