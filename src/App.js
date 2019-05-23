@@ -17,7 +17,7 @@ class App extends Component {
         <header className="App-header">
           {/* <Restaurants /> */}
 
-          <container>
+          <container className="mycontainer">
             <h2>Restaurant Finder</h2>
 
             <SearchBar />

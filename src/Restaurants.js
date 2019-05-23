@@ -21,6 +21,10 @@ class Restaurants extends Component {
   }
 
   componentDidMount = () => {
+    this.getRestaurants();
+  };
+
+  getRestaurants = () => {
     let mySearchText = this.props.searchText;
     let tempRestaurants = [];
     let tempAllLatitudes = [];
@@ -170,10 +174,9 @@ class Restaurants extends Component {
     }
   };
 
-  getRestaurants() {}
-
   // Bootstrap for table columns
   render() {
+    this.getRestaurants();
     console.log("GEOLAT");
     console.log(this.state.userLat);
     return (

@@ -3,7 +3,11 @@ import "./App.css";
 import "./SearchBar.css";
 import Restaurants from "./Restaurants.js";
 import Map from "./Map.js";
+import { withStyles } from "@material-ui/core/styles";
+import Button from "@material-ui/core/Button";
+import blueGrey from "@material-ui/core/colors/blueGrey";
 
+const buttonColor = blueGrey[200];
 const API_KEY = process.env.REACT_APP_API_KEY;
 
 class SearchBar extends Component {
@@ -48,16 +52,27 @@ class SearchBar extends Component {
               id="searchInput"
             />
 
-            <input
-              type="submit"
-              value="Search by Category"
+            <Button
+              variant="contained"
+              color="primary"
               onClick={() => this.getInput()}
-            />
-            <input
+            >
+              Search By Category
+            </Button>
+
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => this.addressSearch()}
+            >
+              Search By Address
+            </Button>
+
+            {/* <input
               type="submit"
               value="Search by Address"
               onClick={() => this.addressSearch()}
-            />
+            /> */}
           </container>
 
           {this.state.searchText.length !== 0 ? (
