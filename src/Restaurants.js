@@ -135,12 +135,14 @@ class Restaurants extends Component {
                 })}
               </div>
               <div className="col-md-auto">
-                {this.state.lats.length > 0 && (
+                {this.state.allLatitudes.length != 0 ? (
                   <Map
                     restaurants={this.state.restaurants}
                     lats={this.state.allLatitudes}
                     longs={this.state.allLongitudes}
                   />
+                ) : (
+                  <div />
                 )}
               </div>
             </div>

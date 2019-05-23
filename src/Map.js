@@ -11,6 +11,17 @@ L.Icon.Default.mergeOptions({
   shadowUrl: require("leaflet/dist/images/marker-shadow.png")
 });
 
+var greenIcon = new L.Icon({
+  iconUrl:
+    "https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png",
+  shadowUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41]
+});
+
 const Wrapper = styled.div`
   width: ${props => props.width};
   height: ${props => props.height};
@@ -33,7 +44,18 @@ export default class Map extends React.Component {
     });
 
     for (let j = 0; j < this.props.lats.length; j++) {
-      L.marker([this.props.lats[j], this.props.longs[j]]).addTo(this.map);
+      let restaurantMarker = L.marker([
+        this.props.lats[j],
+        this.props.longs[j]
+      ]).addTo(this.map);
+      // if (j < 5) {
+      //   let restaurantMarker = L.marker(
+      //     [this.props.lats[j], this.props.longs[j]],
+      //     { icon: greenIcon }
+      //   ).addTo(this.map);
+      // }
+
+      restaurantMarker.bindPopup(this.props.restaurants[j].name);
     }
 
     L.tileLayer(
@@ -44,26 +66,12 @@ export default class Map extends React.Component {
         detectRetina: true
       }
     ).addTo(this.map);
-
-    L.marker([38.04, -78.48]).addTo(this.map);
-
-    var circle = L.circle([38.04, -78.48], {
-      color: "red",
-      fillColor: "#f03",
-      fillOpacity: 0.5,
-      radius: 10
-    }).addTo(this.map);
   };
 
   render() {
-    console.log(this.props.lats[0]);
-    console.log(this.props.longs);
-
-    console.log(this.props.lats[0]);
-
     return (
       <div>
-        <Wrapper width="490px" height="600px" id="map" />
+        <Wrapper width="500px" height="630px" id="map" />
       </div>
     );
   }
