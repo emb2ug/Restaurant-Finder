@@ -1,3 +1,16 @@
+.myContainer {
+  display: flex;
+  justify-content: column-reverse;
+}
+
+.giveMargin {
+  margin: 0px;
+}
+
+.giveMargin2 {
+  margin: 0px;
+}
+
 .App {
   text-align: center;
 }

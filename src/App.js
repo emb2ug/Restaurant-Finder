@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import "./App.css";
 import Restaurants from "./Restaurants.js";
-import Map from "./Map";
 import "leaflet/dist/leaflet.css";
+import SearchBar from "./SearchBar.js";
 
 class App extends Component {
   constructor(props) {
@@ -14,9 +14,14 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Restaurants />
-
-        {/*<Map />*/}
+        <header className="App-header">
+          <container className="giveMargin">
+            <h2>Restaurant Finder</h2>
+            <div className="giveMargin2">
+              <SearchBar />
+            </div>
+          </container>
+        </header>
       </div>
     );
   }
