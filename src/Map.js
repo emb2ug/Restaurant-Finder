@@ -30,28 +30,42 @@ const Wrapper = styled.div`
 export default class Map extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      justEntered: "true",
+      ready: false
+    };
   }
 
   componentDidMount = () => {
-    this.map = L.map("map", {
-      center: [38.04, -78.48],
-      zoom: 13,
-      zoomControl: true
-    });
+    this.updateMap();
+  };
+
+  updateMap() {
+    if (this.props.userLat !== 0) {
+      this.map = L.map("map", {
+        center: [this.props.userLat, this.props.userLng],
+        zoom: 11,
+        zoomControl: true
+      });
+    } else {
+      this.map = L.map("map", {
+        center: [38.04, -78.48],
+        zoom: 13,
+        zoomControl: true
+      });
+    }
 
     for (let i = 0; i < this.props.lats.length; i++) {
       let restaurantMarker = L.marker([
         this.props.lats[i],
         this.props.longs[i]
       ]).addTo(this.map);
-      // if (i < 5) {
-      //   let restaurantMarker = L.marker(
-      //     [this.props.lats[i], this.props.longs[i]],
-      //     { icon: greenIcon }
-      //   ).addTo(this.map);
-      // }
 
       restaurantMarker.bindPopup(this.props.restaurants[i].name);
+      this.setState({
+        ready: true
+      });
     }
 
     L.tileLayer(
@@ -62,12 +76,19 @@ export default class Map extends React.Component {
         detectRetina: true
       }
     ).addTo(this.map);
-  };
+  }
 
   render() {
+    if (this.props.restaurantsUpdated && this.state.ready) {
+      this.map.remove();
+      console.log("Gothere");
+      this.updateMap();
+      this.props.revertMapChange();
+    }
+
     return (
       <div>
-        <Wrapper width="500px" height="630px" id="map" />
+        <Wrapper width="400px" height="500px" id="map" />
       </div>
     );
   }
