@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import "./App.css";
 import "./SearchBar.css";
 import Restaurants from "./Restaurants.js";
-import Map from "./Map.js";
-import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import blueGrey from "@material-ui/core/colors/blueGrey";
 
@@ -47,15 +45,6 @@ class SearchBar extends Component {
     this.getPlace();
   };
 
-  // addressSearch = () => {
-  //   let tempType = document.getElementById("typeInput").value;
-  //   this.setState({
-  //     searchText: tempType,
-  //     isAnAddress: true,
-  //     clicked: true
-  //   });
-  // };
-
   revertChange = () => {
     this.setState({
       clicked: false
@@ -77,6 +66,9 @@ class SearchBar extends Component {
                 id="typeInput"
               />
             </div>
+            <div>
+              <p>in</p>
+            </div>
             <div className="item">
               <input
                 className="myInput"
@@ -87,7 +79,6 @@ class SearchBar extends Component {
                 id="placeInput"
               />
             </div>
-
             <div className="item">
               <Button
                 variant="contained"
@@ -110,10 +101,17 @@ class SearchBar extends Component {
             <div>
               <br />
               <img
-                height="300"
-                width="300"
+                height="364"
+                width="371"
                 src="http://images.clipartpanda.com/restaurant-clipart-Restaurant-Sign-Black.png"
               />
+              <br />
+              <br />
+              <br />
+              <br />
+              <br />
+              <br />
+              <br />
             </div>
           )}
         </header>
