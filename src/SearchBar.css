@@ -1,11 +1,26 @@
-#container {
+.myContainer {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+  flex-direction: column;
+  justify-content: center;
 }
 
-#input {
+.searchBar {
   display: flex;
+  flex-direction: row;
   justify-content: space-around;
-  align-items: flex-start;
+  align-items: flex-end;
+}
+
+.myInput {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+
+  height: 30px;
+  width: 300px;
+}
+
+.item {
+  margin: 10px;
 }

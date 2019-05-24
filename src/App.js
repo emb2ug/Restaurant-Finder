@@ -15,12 +15,11 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          {/* <Restaurants /> */}
-
-          <container className="mycontainer">
+          <container className="giveMargin">
             <h2>Restaurant Finder</h2>
-
-            <SearchBar />
+            <div className="giveMargin2">
+              <SearchBar />
+            </div>
           </container>
         </header>
       </div>

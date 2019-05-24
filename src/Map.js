@@ -32,46 +32,13 @@ export default class Map extends React.Component {
     super(props);
 
     this.state = {
-      justEntered: "true"
+      justEntered: "true",
+      ready: false
     };
   }
 
   componentDidMount = () => {
-    this.setState({
-      justEntered: "false"
-    });
     this.updateMap();
-    // if (this.props.userLat !== 0) {
-    //   this.map = L.map("map", {
-    //     center: [this.props.userLat, this.props.userLng],
-    //     zoom: 11,
-    //     zoomControl: true
-    //   });
-    // } else {
-    //   this.map = L.map("map", {
-    //     center: [38.04, -78.48],
-    //     zoom: 13,
-    //     zoomControl: true
-    //   });
-    // }
-
-    // for (let i = 0; i < this.props.lats.length; i++) {
-    //   let restaurantMarker = L.marker([
-    //     this.props.lats[i],
-    //     this.props.longs[i]
-    //   ]).addTo(this.map);
-
-    //   restaurantMarker.bindPopup(this.props.restaurants[i].name);
-    // }
-
-    // L.tileLayer(
-    //   "https://maps.heigit.org/openmapsurfer/tiles/roads/webmercator/{z}/{x}/{y}.png",
-    //   {
-    //     maxZoom: 100,
-    //     maxNativeZoom: 50,
-    //     detectRetina: true
-    //   }
-    // ).addTo(this.map);
   };
 
   updateMap() {
@@ -96,6 +63,9 @@ export default class Map extends React.Component {
       ]).addTo(this.map);
 
       restaurantMarker.bindPopup(this.props.restaurants[i].name);
+      this.setState({
+        ready: true
+      });
     }
 
     L.tileLayer(
@@ -109,7 +79,8 @@ export default class Map extends React.Component {
   }
 
   render() {
-    if (this.props.restaurantsUpdated && !this.state.justEntered) {
+    if (this.props.restaurantsUpdated && this.state.ready) {
+      this.map.remove();
       console.log("Gothere");
       this.updateMap();
       this.props.revertMapChange();

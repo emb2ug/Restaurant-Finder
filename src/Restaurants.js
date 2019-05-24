@@ -36,11 +36,11 @@ class Restaurants extends Component {
     console.log(this.props.searchText);
 
     /* Geocoding */
-    if (this.props.searchText.length > 0 && this.props.isAnAddress) {
+    if (this.props.searchType.length > 0 && this.props.searchPlace.length > 0) {
       console.log("gothereaddress");
       let geoURL =
         "https://cors-anywhere-hclaunch.herokuapp.com/https://maps.googleapis.com/maps/api/geocode/json?address=" +
-        this.props.searchText +
+        this.props.searchPlace +
         "&key=" +
         API_KEY;
       console.log(geoURL);
@@ -65,11 +65,15 @@ class Restaurants extends Component {
 
         .then(rep => {
           let secondGeoURL =
-            "https://cors-anywhere-hclaunch.herokuapp.com/https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" +
+            "https://cors-anywhere-hclaunch.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch/json?query=" +
+            this.props.searchType +
+            "+in+" +
+            this.props.searchPlace +
+            "&opennow&location=" +
             geoLat +
             "," +
             geoLng +
-            "&radius=20000&type=restaurant&key=" +
+            "&radius=20000&key=" +
             API_KEY;
 
           console.log(secondGeoURL);
@@ -119,61 +123,6 @@ class Restaurants extends Component {
             });
           });
         });
-    } else if (this.props.searchText.length > 0 && !this.props.isAnAddress) {
-      url =
-        "https://cors-anywhere-hclaunch.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch/json?query=" +
-        mySearchText +
-        "+in+charlottesville&type=%22restaurant%22&radius=20000&opennow&key=" +
-        API_KEY;
-
-      axios
-        .get(url)
-
-        .then(response => {
-          response.data.results.forEach(restaurant => {
-            let myString = "";
-            for (let i = 0; i < restaurant.price_level; i++) {
-              myString += "$";
-            }
-
-            tempRestaurants.push({
-              name: restaurant.name,
-              rating: restaurant.rating,
-              price: restaurant.price_level,
-              dollarSigns: myString,
-              latitude: restaurant.geometry.location.lat,
-              longitude: restaurant.geometry.location.lng
-            });
-          });
-
-          tempRestaurants.sort((a, b) =>
-            a.rating < b.rating
-              ? 1
-              : a.rating === b.rating
-              ? a.price > b.price
-                ? 1
-                : -1
-              : -1
-          );
-
-          // Sort restaurants by rating (high to low)
-          // Tiebreaker is price level (low to hight)
-          tempRestaurants.forEach(restaurant => {
-            tempAllLatitudes.push(restaurant.latitude);
-            tempAllLongitudes.push(restaurant.longitude);
-            tempNames.push(restaurant.name);
-          });
-
-          this.setState({
-            restaurants: tempRestaurants,
-            allLatitudes: tempAllLatitudes,
-            allLongitudes: tempAllLongitudes,
-            names: tempNames,
-            userLat: tempRestaurants[0].latitude,
-            userLng: tempRestaurants[0].longitude,
-            restaurantsUpdated: true
-          });
-        });
     }
   };
 
@@ -203,14 +152,12 @@ class Restaurants extends Component {
         />
 
         <header className="App-header">
-          {/* <h4>Results for "{this.props.searchText}"</h4> */}
           <h4>
-            {this.props.isAnAddress &&
-              'Results near "' + this.props.searchText + '"'}
-          </h4>
-          <h4>
-            {!this.props.isAnAddress &&
-              'Results for "' + this.props.searchText + '"'}
+            {'Results for "' +
+              this.props.searchType +
+              " in " +
+              this.props.searchPlace +
+              '"'}
           </h4>
 
           <div className="container">

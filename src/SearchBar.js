@@ -15,7 +15,8 @@ class SearchBar extends Component {
     super(props);
 
     this.state = {
-      searchText: "",
+      searchType: "",
+      searchPlace: "",
       isAnAddress: false,
       clicked: false
     };
@@ -23,24 +24,37 @@ class SearchBar extends Component {
 
   componentDidMount = () => {};
 
-  getInput = () => {
-    let userInput = document.getElementById("searchInput").value;
+  getType = () => {
+    let tempType = document.getElementById("typeInput").value;
     this.setState({
-      searchText: userInput,
-      isAnAddress: false,
+      searchType: tempType,
       clicked: true
     });
-    console.log(userInput);
+    console.log(tempType);
   };
 
-  addressSearch = () => {
-    let userInput = document.getElementById("searchInput").value;
+  getPlace = () => {
+    let tempPlace = document.getElementById("placeInput").value;
     this.setState({
-      searchText: userInput,
-      isAnAddress: true,
+      searchPlace: tempPlace,
       clicked: true
     });
+    console.log(tempPlace);
   };
+
+  getTypeAndPlace = () => {
+    this.getType();
+    this.getPlace();
+  };
+
+  // addressSearch = () => {
+  //   let tempType = document.getElementById("typeInput").value;
+  //   this.setState({
+  //     searchText: tempType,
+  //     isAnAddress: true,
+  //     clicked: true
+  //   });
+  // };
 
   revertChange = () => {
     this.setState({
@@ -52,45 +66,45 @@ class SearchBar extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <container>
-            <input
-              className="mycontainer"
-              type="text"
-              height="50"
-              width="200"
-              placeholder="Search here!"
-              id="searchInput"
-            />
+          <container className="searchBar">
+            <div className="item">
+              <input
+                className="myInput"
+                type="text"
+                height="50"
+                width="200"
+                placeholder="What kind of food are you looking for?"
+                id="typeInput"
+              />
+            </div>
+            <div className="item">
+              <input
+                className="myInput"
+                type="text"
+                height="50"
+                width="200"
+                placeholder="Where would you like to search?"
+                id="placeInput"
+              />
+            </div>
 
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => this.getInput()}
-            >
-              Find Cville Food
-            </Button>
-
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => this.addressSearch()}
-            >
-              Search By Location
-            </Button>
-
-            {/* <input
-              type="submit"
-              value="Search by Address"
-              onClick={() => this.addressSearch()}
-            /> */}
+            <div className="item">
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => this.getTypeAndPlace()}
+              >
+                Search
+              </Button>
+            </div>
           </container>
 
-          {this.state.searchText.length !== 0 ? (
+          {this.state.searchPlace.length !== 0 ? (
             <Restaurants
-              searchText={this.state.searchText}
-              isAnAddress={this.state.isAnAddress}
               clicked={this.state.clicked}
               revertChange={this.revertChange}
+              searchType={this.state.searchType}
+              searchPlace={this.state.searchPlace}
             />
           ) : (
             <div>
