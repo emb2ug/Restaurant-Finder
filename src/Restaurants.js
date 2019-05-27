@@ -37,50 +37,67 @@ class Restaurants extends Component {
 
     /* Geocoding */
     if (this.props.searchType.length > 0 && this.props.searchPlace.length > 0) {
-      console.log("gothereaddress");
-      let geoURL =
-        "https://cors-anywhere-hclaunch.herokuapp.com/https://maps.googleapis.com/maps/api/geocode/json?address=" +
-        this.props.searchPlace +
-        "&key=" +
-        API_KEY;
-      console.log(geoURL);
-      let geoLat = 0;
-      let geoLng = 0;
+      // console.log("gothereaddress");
+      // let geoURL =
+      //   "https://cors-anywhere-hclaunch.herokuapp.com/https://maps.googleapis.com/maps/api/geocode/json?address=" +
+      //   this.props.searchPlace +
+      //   "&key=" +
+      //   API_KEY;
+      // console.log(geoURL);
+      let geoLat = undefined;
+      let geoLng = undefined;
+
+      let ownBackendGeoURL =
+        "http://localhost:9000/getLatLong/" + this.props.searchPlace;
 
       axios
-        .get(geoURL)
+        //.get(geoURL)
+        .get(ownBackendGeoURL)
 
         .then(geoResponse => {
-          geoLat = geoResponse.data.results[0].geometry.location.lat;
+          geoLat = geoResponse.lat;
 
-          geoLng = geoResponse.data.results[0].geometry.location.lng;
+          geoLng = geoResponse.lng;
           console.log(geoLat);
           console.log(geoLng);
+          console.log("LATLATLATLAT=" + geoResponse.lat);
 
-          this.setState({
-            userLat: geoResponse.data.results[0].geometry.location.lat,
-            userLng: geoResponse.data.results[0].geometry.location.lng
-          });
+          let ready = false;
+
+          while (!ready) {
+            if (geoLat == undefined) {
+              ready = true;
+            }
+          }
+
+          if (geoResponse.lat !== undefined) {
+            console.log("LATLAT=" + geoResponse.lat);
+            this.setState({
+              userLat: geoResponse.lat,
+              userLng: geoResponse.lng
+            });
+          }
         })
 
         .then(rep => {
-          let secondGeoURL =
-            "https://cors-anywhere-hclaunch.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch/json?query=" +
+          // this.setState({
+          //   userLat: geoLat,
+          //   userLng: geoLng
+          // });
+          let ownBackendURL2 =
+            "http://localhost:9000/getRestaurants/" +
             this.props.searchType +
-            "+in+" +
+            "/" +
             this.props.searchPlace +
-            "&opennow&location=" +
+            "/" +
             geoLat +
-            "," +
-            geoLng +
-            "&radius=20000&key=" +
-            API_KEY;
+            "/" +
+            geoLng;
 
-          console.log(secondGeoURL);
-
-          axios.get(secondGeoURL).then(response => {
-            console.log(response);
-            response.data.results.forEach(restaurant => {
+          axios.get(ownBackendURL2).then(response => {
+            // console.log("backfromapi" + response.data[0].name);
+            response.data.forEach(restaurant => {
+              // console.log("backfromapi" + restaurant.name);
               let myString = "";
               for (let i = 0; i < restaurant.price_level; i++) {
                 myString += "$";
@@ -95,6 +112,8 @@ class Restaurants extends Component {
                 longitude: restaurant.geometry.location.lng
               });
             });
+
+            console.log("AAA" + tempRestaurants[0].name);
 
             tempRestaurants.sort((a, b) =>
               a.rating < b.rating
@@ -120,6 +139,8 @@ class Restaurants extends Component {
               allLongitudes: tempAllLongitudes,
               names: tempNames,
               restaurantsUpdated: true
+              // userLat: geoLat,
+              // userLng: geoLng
             });
           });
         });
